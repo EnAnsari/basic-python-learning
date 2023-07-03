@@ -1,0 +1,125 @@
+PS C:\DATA\project\python\basic-python-learning\Django\just_urls> python .\manage.py shell
+Python 3.11.2 (tags/v3.11.2:878ead1, Feb  7 2023, 16:38:35) [MSC v.1934 64 bit (AMD64)]
+Type 'copyright', 'credits' or 'license' for more information
+IPython 8.10.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]:
+
+In [1]:
+
+In [1]:
+
+In [1]:
+
+In [1]:
+PS C:\DATA\project\python\basic-python-learning\Django\just_urls> python .\manage.py shell
+Python 3.11.2 (tags/v3.11.2:878ead1, Feb  7 2023, 16:38:35) [MSC v.1934 64 bit (AMD64)]
+Type 'copyright', 'credits' or 'license' for more information
+IPython 8.10.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from blog.models import Post
+
+In [2]: from django.contrib.auth.models import User
+
+In [3]: user = User.objects.get(username='reza')
+---------------------------------------------------------------------------
+DoesNotExist                              Traceback (most recent call last)
+Cell In[3], line 1
+----> 1 user = User.objects.get(username='reza')
+
+File ~\AppData\Roaming\Python\Python311\site-packages\django\db\models\manager.py:85, in BaseManager._get_queryset_methods.<locals>.create_method.<locals>.manager_method(self, *args, **kwargs)
+     84 def manager_method(self, *args, **kwargs):
+---> 85     return getattr(self.get_queryset(), name)(*args, **kwargs)
+
+File ~\AppData\Roaming\Python\Python311\site-packages\django\db\models\query.py:650, in QuerySet.get(self, *args, **kwargs)
+    648     return clone._result_cache[0]
+    649 if not num:
+--> 650     raise self.model.DoesNotExist(
+    651         "%s matching query does not exist." % self.model._meta.object_name
+    652     )
+    653 raise self.model.MultipleObjectsReturned(
+    654     "get() returned more than one %s -- it returned %s!"
+    655     % (
+   (...)
+    658     )
+    659 )
+
+DoesNotExist: User matching query does not exist.
+
+In [4]: user = User.objects.get(username='mateo')
+
+In [5]: post = Post(title='new post', slug='new-post', auther=user, body='my first post')
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+Cell In[5], line 1
+----> 1 post = Post(title='new post', slug='new-post', auther=user, body='my first post')
+
+File ~\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py:565, in Model.__init__(self, *args, **kwargs)
+    563     if unexpected:
+    564         unexpected_names = ", ".join(repr(n) for n in unexpected)
+--> 565         raise TypeError(
+    566             f"{cls.__name__}() got unexpected keyword arguments: "
+    567             f"{unexpected_names}"
+    568         )
+    569 super().__init__()
+    570 post_init.send(sender=cls, instance=self)
+
+TypeError: Post() got unexpected keyword arguments: 'auther'
+
+In [6]: post = Post(title='new post', slug='new-post', author=user, body='my first post')
+
+In [7]: post.save()
+
+In [8]: Post.objects.create(title='post2', slug='new-post2', author=user, body='my second post')
+Out[8]: <Post: post2>
+
+In [9]: post.title
+Out[9]: 'new post'
+
+In [10]: post.title = 'new title'
+
+In [11]: post.save()
+
+In [12]: all = Post.objects.all()
+
+In [13]: user2 = User.objects.get(username='rahmat')
+
+In [14]: select * from User.username
+  Cell In[14], line 1
+    select * from User.username
+             ^
+SyntaxError: invalid syntax
+
+
+In [15]: Post.objects.filter(author=user2)
+Out[15]: <QuerySet [<Post: Breaking News>, <Post: hello midjerny>]>
+
+In [16]: Post.objects.filter(author=user2).filter(publish__year=2022)
+Out[16]: <QuerySet [<Post: Breaking News>]>
+
+In [17]: Post.objects.filter(publish__year=2022, author__username='rahmat)
+  Cell In[17], line 1
+    Post.objects.filter(publish__year=2022, author__username='rahmat)
+                                                             ^
+SyntaxError: unterminated string literal (detected at line 1)
+
+
+In [18]: Post.objects.filter(publish__year=2022, author__username='rahmat')
+Out[18]: <QuerySet [<Post: Breaking News>]>
+
+In [19]: Post.objects.filter(author=user2).exclude(publish__year=2022)
+Out[19]: <QuerySet [<Post: hello midjerny>]>
+
+In [20]: Post.objects.all().order_by('-publish')
+Out[20]: <QuerySet [<Post: post2>, <Post: new title>, <Post: hello midjerny>, <Post: go>, <Post: Breaking News>]>
+
+In [21]: Post.objects.all().order_by('publish')
+Out[21]: <QuerySet [<Post: Breaking News>, <Post: go>, <Post: hello midjerny>, <Post: new title>, <Post: post2>]>
+
+In [22]: post.delete()
+Out[22]: (1, {'blog.Post': 1})
+
+In [23]: Post.objects.all().order_by('-publish')
+Out[23]: <QuerySet [<Post: post2>, <Post: hello midjerny>, <Post: go>, <Post: Breaking News>]>
+
+In [24]:
