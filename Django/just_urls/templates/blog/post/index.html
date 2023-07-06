@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
     <h1>List of Posts!</h1>
     {% for post in posts %}
-        <h3>{{ post.title }} : {{ post.author }}</h3>
+        <a href="{{ post.get_absolute_url }}">
+            <h3>{{ post.title }} : {{ post.author }}</h3>
+        </a>
     {% endfor %}
 </body>
 </html>
