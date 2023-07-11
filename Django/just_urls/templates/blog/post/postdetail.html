@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Detail</title>
-</head>
-<body>
+{% extends 'blog/parent/base.html' %}
+{% block title %}Detail{% endblock %}
+{% block content %}
     <h2>
         {{ post.title }}
     </h2>
@@ -19,5 +15,4 @@
     <p>
         published in {{ post.publish }}
     </p>
-</body>
-</html>
+{% endblock %}

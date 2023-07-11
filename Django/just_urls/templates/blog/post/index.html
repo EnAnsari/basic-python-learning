@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% extends 'blog/parent/base.html' %}
+{% block title %}list{% endblock %}
+{% block content %}
     <h1>List of Posts!</h1>
     {% for post in posts %}
         <a href="{{ post.get_absolute_url }}">
             <h3>{{ post.title }} : {{ post.author }}</h3>
         </a>
     {% endfor %}
-</body>
-</html>
+{% endblock %}
