@@ -9,7 +9,8 @@
     </i>
     <p>
         context: <br>
-        {{ post.body }}
+{#        {{ post.body | linebreaks | truncatewords:3 }}#}
+        {{ post.body | linebreaks }}
     </p>
     <hr>
     <p>

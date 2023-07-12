@@ -1,10 +1,16 @@
 {% extends 'blog/parent/base.html' %}
+{% load static %}
 {% block title %}list{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
+{% endblock %}
 {% block content %}
-    <h1>List of Posts!</h1>
+    <h1 class="test">List of Posts!</h1>
     {% for post in posts %}
         <a href="{{ post.get_absolute_url }}">
             <h3>{{ post.title }} : {{ post.author }}</h3>
         </a>
     {% endfor %}
+{#    <img src="{% static 'img/outside.jpg' %}">#}
+    {% include 'blog/partials/pagination.html' with page=posts %}
 {% endblock %}
