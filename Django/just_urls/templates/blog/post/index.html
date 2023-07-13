@@ -12,5 +12,6 @@
         </a>
     {% endfor %}
 {#    <img src="{% static 'img/outside.jpg' %}">#}
-    {% include 'blog/partials/pagination.html' with page=posts %}
+{#    {% include 'blog/partials/pagination.html' with page=posts %}#}
+    {% include 'blog/partials/pagination.html' with page=page_obj %}
 {% endblock %}
