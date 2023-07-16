@@ -1,0 +1,10 @@
+{% extends 'blog/parent/base.html' %}
+{% block title %}Account form{% endblock %}
+{% block content %}
+    <h1 style="color: navy; margin-right: auto">Forms of Accounts</h1>
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}
