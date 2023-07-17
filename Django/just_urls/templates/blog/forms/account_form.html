@@ -3,8 +3,36 @@
 {% block content %}
     <h1 style="color: navy; margin-right: auto">Forms of Accounts</h1>
     <form method="post">
-        {{ form.as_p }}
         {% csrf_token %}
+        first name:
+        <input type="text" name="first_name" required
+            {% if form.first_name.value %}
+                value="{{ form.first_name.value }}"
+            {% else %}
+                value="{{ account.user.first_name | default:'' }}"
+            {% endif %}
+        >
+        <br>
+        last name:
+        <input type="text" name="last_name" required
+            {% if form.last_name.value %}
+                value="{{ form.last_name.value }}"
+            {% else %}
+                value="{{ account.user.last_name | default:'' }}"
+            {% endif %}
+        >
+        <br>
+        phone:
+        <input type="text" disabled value="{{ account.phone | default:''}}">
+        <br>
+        gender:
+        Male<input type="radio" name="gender" value="male" {% if account.gender == 'male' %} checked {% endif %}>
+        Female<input type="radio" name="gender" value="female" {% if account.gender == 'female' %} checked {% endif %}>
+        <br>
+        address:
+        <textarea name="address" required>{% if form.address.value %}{{ form.address.value }}{% else %}{{ account.address | default:'' }}{% endif %}</textarea>
+
+        <br><br>
         <input type="submit" value="Save">
     </form>
 {% endblock %}

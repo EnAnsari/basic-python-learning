@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Post
+from .models import Post, Account
 from .forms import AccountForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import ListView
@@ -44,10 +44,22 @@ def postdetail(request, year, month, day, post):
 
 
 def userAccount(request):
+    user = request.user
+    try:
+        account = Account.objects.get(user=user)
+    except:
+        account = Account.objects.create(user=user)
     if request.POST:
-        form = AccountForm(data=request.POST)
+        form = AccountForm(request.POST)
         if form.is_valid():
-            form.save()
-    else:
-        form = AccountForm()
-    return render(request, 'blog/forms/account_form.html', {'form': form})
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            account.gender = form.cleaned_data['gender']
+            account.address = form.cleaned_data['address']
+            user.save()
+            account.save()
+            return redirect('blog:index')
+        else:
+            return render(request, 'blog/forms/account_form.html', {'form': form, 'account': account})
+    form = AccountForm()
+    return render(request, 'blog/forms/account_form.html', {'form': form, 'account': account})
