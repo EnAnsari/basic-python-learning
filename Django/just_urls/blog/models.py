@@ -55,6 +55,7 @@ class Account(models.Model):
     address = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    age = models.PositiveIntegerField(default=0, null=True, blank=True)
     # birthday
 
     def __str__(self):

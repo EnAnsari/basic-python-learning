@@ -56,6 +56,8 @@ def userAccount(request):
             user.last_name = form.cleaned_data['last_name']
             account.gender = form.cleaned_data['gender']
             account.address = form.cleaned_data['address']
+            account.age = form.cleaned_data['age']
+            account.phone = form.cleaned_data['phone']
             user.save()
             account.save()
             return redirect('blog:index')

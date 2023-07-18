@@ -1,7 +1,7 @@
 {% extends 'blog/parent/base.html' %}
 {% block title %}Account form{% endblock %}
 {% block content %}
-    <h1 style="color: navy; margin-right: auto">Forms of Accounts</h1>
+    <h1 style="color: navy; margin-right: auto">Forms of Accounts {{ account.user.first_name }}</h1>
     <form method="post">
         {% csrf_token %}
         first name:
@@ -22,8 +22,23 @@
             {% endif %}
         >
         <br>
+        age:
+        <input type="number" name="age" required
+            {% if form.age.value %}
+                value="{{ form.age.value }}"
+            {% else %}
+                value="{{ account.age | default:'' }}"
+            {% endif %}
+        >
+        <br>
         phone:
-        <input type="text" disabled value="{{ account.phone | default:''}}">
+        <input type="text" name="phone"
+            {% if form.phone.value %}
+                value="{{ form.phone.value }}"
+            {% else %}
+                value="{{ account.phone | default:'' }}"
+            {% endif %}
+        >
         <br>
         gender:
         Male<input type="radio" name="gender" value="male" {% if account.gender == 'male' %} checked {% endif %}>
@@ -35,4 +50,21 @@
         <br><br>
         <input type="submit" value="Save">
     </form>
+
+    {% if form.errors %}
+        fix above errors:
+        <br>
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    {{ field.label }} : {{ error }}
+                    <br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+    {% endif %}
+
 {% endblock %}

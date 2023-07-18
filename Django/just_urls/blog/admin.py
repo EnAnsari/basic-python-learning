@@ -19,4 +19,4 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone', 'address')
+    list_display = ('phone', 'address')
