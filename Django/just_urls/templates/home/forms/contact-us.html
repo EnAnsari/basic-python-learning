@@ -1,0 +1,51 @@
+{% extends 'blog/parent/base.html' %}
+{% load static %}
+{% block title %}contact us{% endblock %}
+{% block content %}
+    <h1 style="color: navy; margin-right: auto">Contact US</h1>
+    {% if sent %}
+        <p style="color: green">Message Sent Successfully!</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        Full name:
+        <input type="text" name="name" required maxlength="25">
+        <br><br>
+        Email:
+        <input type="email" name="email" required>
+        <br><br>
+        Phone Number:
+        <input type="text" name="phone" maxlength="11">
+        <br><br>
+        Subject:
+        <select name="subject" required>
+            <option value="critics and suggestions">Critics and Suggestions</option>
+            <option value="complaints">Complaints</option>
+        </select>
+        <br><br>
+        Message Text:
+        <textarea name="message" required></textarea>
+        <br><br>
+        <input type="submit" value="send" style="background-color: greenyellow">
+
+    </form>
+
+
+
+    {% if form.errors %}
+        fix above errors:
+        <br>
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    {{ field.label }} : {{ error }}
+                    <br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

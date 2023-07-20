@@ -8,7 +8,7 @@
         <input type="text" name="first_name" required
             {% if form.first_name.value %}
                 value="{{ form.first_name.value }}"
-            {% else %}
+            {% else value="{{ form.first_name.value }}"%}
                 value="{{ account.user.first_name | default:'' }}"
             {% endif %}
         >
