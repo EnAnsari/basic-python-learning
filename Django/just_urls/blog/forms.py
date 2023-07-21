@@ -29,3 +29,9 @@ class AccountForm(forms.Form):
                 raise forms.ValidationError('age can not be negative!')
             else:
                 return age
+
+
+class ShareForm(forms.Form):
+    message = forms.CharField(widget=forms.Textarea, required=True, label='Message')
+    name = forms.CharField(max_length=25, required=True, label='Full name')
+    to = forms.EmailField(required=True, label='Email')
