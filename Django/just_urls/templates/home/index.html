@@ -6,8 +6,10 @@
 </head>
 <body>
     <h1>This is my first project in Django!</h1>
-    <h3><a href="http://localhost:8000/admin/">admin</a></h3>
-    <h3><a href="http://localhost:8000/blog/">blog index</a></h3>
-    <h3><a href="http://localhost:8000/blog/postlist/">post list</a></h3>
+{#    <h3><a href="http://localhost:8000/admin/">admin</a></h3>#}
+    <h3><a href="{{ link }}">admin</a></h3>
+    <h3><a href="{% url 'blog:index' %}">blog index</a></h3>
+    <h3><a href="{% url 'blog:post_list' %}">post list</a></h3>
+    <h3><a href="{% url 'home:contact_us' %}">contact us</a></h3>
 </body>
 </html>
