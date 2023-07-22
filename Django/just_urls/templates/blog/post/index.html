@@ -11,6 +11,9 @@
             <h3>{{ post.title }} : {{ post.author }}</h3>
         </a>
     {% endfor %}
+    <a href="{% url "home:index" %}">
+        back
+    </a>
 {#    <img src="{% static 'img/outside.jpg' %}">#}
 {#    {% include 'blog/partials/pagination.html' with page=posts %}#}
     {% include 'blog/partials/pagination.html' with page=page_obj %}

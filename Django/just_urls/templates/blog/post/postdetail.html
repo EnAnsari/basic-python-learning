@@ -16,4 +16,11 @@
     <p>
         published in {{ post.publish }}
     </p>
+    <a href="{% url 'blog:share-post' post.id %}">
+        <p>share by email</p>
+    </a>
+    <br>
+    <a href="{% url "blog:post_list" %}">
+        back
+    </a>
 {% endblock %}
