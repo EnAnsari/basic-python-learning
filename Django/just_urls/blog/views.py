@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Post, Account
-from .forms import AccountForm
+from .forms import AccountForm, ShareForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import ListView
-
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -36,9 +36,8 @@ class PostListView(ListView):
     template_name = 'blog/post/index.html'
 
 
-def postdetail(request, year, month, day, post):
-    post2send = get_object_or_404(Post, status='published', publish__year=year, publish__month=month, publish__day=day,
-                                  slug=post)
+def postdetail(request, slug, pk):
+    post2send = get_object_or_404(Post, status='published', slug=slug, id=pk)
     packet = {'post': post2send}
     return render(request, 'blog/post/postdetail.html', packet)
 
@@ -65,3 +64,22 @@ def userAccount(request):
             return render(request, 'blog/forms/account_form.html', {'form': form, 'account': account})
     form = AccountForm()
     return render(request, 'blog/forms/account_form.html', {'form': form, 'account': account})
+
+
+def sharePost(request, post_id):
+    post = get_object_or_404(Post, status='published', id=post_id)
+    sent = False
+    if request.method == 'POST':
+        form = ShareForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            subject = '{0} invited you to read {1}'.format(cd['name'], post.title)
+            to = cd['to']
+            message = cd['message']
+            msg = f"{cd['name']} invited you to reading {post.title} post in above link:\n{post_url}\n{message}"
+            from_email = 'en.ansari@outlook.com'
+            sent = send_mail(subject, msg, from_email, [to], fail_silently=True)
+            return render(request, 'blog/forms/share-post.html', {'form': form, 'sent': sent, 'post': post})
+    form = ShareForm()
+    return render(request, 'blog/forms/share-post.html', {'form': form, 'sent': sent, 'post': post})

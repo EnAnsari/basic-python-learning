@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 
 
 def index(request):
-    return render(request, 'home/index.html')
+    return render(request, 'home/index.html', {'link': request.build_absolute_uri('admin/')})
 
 
 def contactUs(request):
