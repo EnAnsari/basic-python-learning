@@ -133,7 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_HOST_USER = 'en.ansari@outlook.com'
-EMAIL_HOST_PASSWORD = 'password'
+EMAIL_HOST_PASSWORD = 'PASSWORD'
 EMAIL_PORT = 25
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
