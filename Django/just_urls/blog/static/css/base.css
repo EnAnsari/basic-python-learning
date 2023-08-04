@@ -1,3 +1,8 @@
 body {
     background-color: cyan;
 }
+
+.name-class {
+    background-color: gold;
+    border-radius: 2%;
+}
