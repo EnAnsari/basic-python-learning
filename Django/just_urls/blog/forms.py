@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account
+from .models import *
 
 
 class AccountForm(forms.Form):
@@ -32,6 +32,17 @@ class AccountForm(forms.Form):
 
 
 class ShareForm(forms.Form):
-    message = forms.CharField(widget=forms.Textarea, required=True, label='Message')
-    name = forms.CharField(max_length=25, required=True, label='Full name')
+    message = forms.CharField(widget=forms.Textarea(attrs={'class': 'name-class'}), required=True, label='Message')
+    name = forms.CharField(widget=forms.TextInput, max_length=25, required=True, label='Full name')
     to = forms.EmailField(required=True, label='Email')
+
+
+class MyFor(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = "__all__"
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'titleClass'
+            })
+        }

@@ -20,7 +20,8 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/DATA/project/python/basic-python-learning/Django/just_urls"
   }
 }]]></component>
   <component name="RunManager">
@@ -56,6 +57,7 @@
       <option name="presentableId" value="Default" />
       <updated>1690618872600</updated>
       <workItem from="1690618874683" duration="165000" />
+      <workItem from="1691918205815" duration="19000" />
     </task>
     <servers />
   </component>
