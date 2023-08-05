@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Account
+from .models import Post, Account, Comment
 
 
 # Register your models here.
@@ -20,3 +20,10 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
     list_display = ('phone', 'address')
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'post', 'created', 'active')
+    list_filter = ('active', 'created', 'updated')
+    list_editable = ('active',)

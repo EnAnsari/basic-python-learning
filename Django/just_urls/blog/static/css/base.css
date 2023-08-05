@@ -6,3 +6,22 @@ body {
     background-color: gold;
     border-radius: 2%;
 }
+
+.comment {
+    width: 300px;
+    height: 400px;
+    border: solid 2px chocolate;
+    /*margin: 0 auto;*/
+    text-align: center;
+    overflow: auto;
+    /*float: left;*/
+}
+
+.new-comment {
+    border: solid 1px darkred;
+}
+
+.body-of-comment {
+    margin: 0 auto;
+    width: 260px;
+}

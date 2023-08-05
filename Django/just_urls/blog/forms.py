@@ -46,3 +46,12 @@ class MyFor(forms.ModelForm):
                 'class': 'titleClass'
             })
         }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('name', 'body')
+        widgets = {
+            'body': forms.Textarea(attrs={'class': 'body-of-comment'})
+        }

@@ -23,4 +23,35 @@
     <a href="{% url "blog:post_list" %}">
         back
     </a>
+    <br><br>
+    <div class="comment">
+        <div class="new-comment">
+            <h3 style="align-content: center">New Comment</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ cm_form.as_p }}
+                {% if ncm %}
+                    <p style="color: green">
+                        Comment Submitted Successfully!
+                    </p>
+                {% endif %}
+                <input type="submit" value="comment">
+            </form>
+        </div>
+        <br>
+        {% with cm.count as count %}
+            this post have {{ count }} comment
+            <br>
+            {% for comment in cm %}
+                <div style="border: solid 1px green">
+                {{ forloop.counter }}- {{ comment.name }}:
+                <br>
+                {{ comment.body }}
+                </div>
+                <br>
+            {% empty %}
+                There is no comment!
+            {% endfor %}
+        {% endwith %}
+    </div>
 {% endblock %}
