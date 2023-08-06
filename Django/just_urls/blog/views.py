@@ -5,35 +5,41 @@ from .forms import AccountForm, ShareForm, CommentForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import ListView
 from django.core.mail import send_mail
-
-# Create your views here.
+from taggit.models import Tag
 
 
 def index(request):
     return HttpResponse("Hello, This is my first django Project!")
 
 
-# def postList(request):
-#     posts = Post.published.all()
-#     paginator = Paginator(posts, 2)
-#     page = request.GET.get('page')
-#     try:
-#         posts = paginator.page(page)
-#     except PageNotAnInteger:
-#         posts = paginator.page(1)
-#     except EmptyPage:
-#         posts = paginator.page(paginator.num_pages)
-#     packet = {
-#         'posts': posts,
-#         'page': page,
-#     }
-#     return render(request, 'blog/post/index.html', packet)
+def postList(request, tag_slug=None):
+    posts = Post.published.all()
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
 
-class PostListView(ListView):
-    queryset = Post.published.all()
-    context_object_name = 'posts'
-    paginate_by = 2
-    template_name = 'blog/post/index.html'
+    paginator = Paginator(posts, 2)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    packet = {
+        'posts': posts,
+        'page': page,
+        'tag': tag,
+    }
+    return render(request, 'blog/post/index.html', packet)
+
+
+# class PostListView(ListView):
+#     queryset = Post.published.all()
+#     context_object_name = 'posts'
+#     paginate_by = 2
+#     template_name = 'blog/post/index.html'
 
 
 def postdetail(request, slug, pk):
