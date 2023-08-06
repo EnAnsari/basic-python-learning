@@ -54,4 +54,20 @@
             {% endfor %}
         {% endwith %}
     </div>
+    <div>
+        Tags:
+        {% for tag in post.tags.all %}
+            {{ tag.name }}
+            {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </div>
+    <hr>
+    <div>
+        similar posts:
+        <br>
+        {% for sm in similar_posts %}
+            <a href="{% url 'blog:post_detail' sm.slug sm.id %}">{{ sm.title }}</a>
+            <br>
+        {% endfor %}
+    </div>
 {% endblock %}

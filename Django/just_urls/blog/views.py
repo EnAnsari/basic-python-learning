@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import ListView
 from django.core.mail import send_mail
 from taggit.models import Tag
+from django.db.models import Count
 
 
 def index(request):
@@ -56,11 +57,16 @@ def postdetail(request, slug, pk):
     else:
         comment_form = CommentForm()
 
+    ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.published.filter(tags__in=ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(s_count=Count('tags')).order_by('-s_count', '-publish')[:2]
+
     packet = {
         'post': post,
         'cm': comments,
         'ncm': new_comment,
         'cm_form': comment_form,
+        'similar_posts': similar_posts,
     }
     return render(request, 'blog/post/postdetail.html', packet)
 
