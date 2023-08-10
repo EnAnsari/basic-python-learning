@@ -1,0 +1,19 @@
+{% extends 'blog/parent/base.html' %}
+{% block title %}Detail{% endblock %}
+{% block content %}
+    {% spaceless %}
+        {% regroup packet|dictsort:"age" by age as g_list %}
+        <ul>
+            {% for age in g_list %}
+                <li>
+                    {{ age.grouper }}
+                    <ul>
+                        {% for item in age.list %}
+                            <li>{{ item.name }}: {{ item.weight }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endspaceless %}
+{% endblock %}
