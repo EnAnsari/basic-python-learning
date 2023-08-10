@@ -10,4 +10,5 @@ urlpatterns = [
     path('postdetail/<slug:slug>/<int:pk>/', views.postdetail, name='post_detail'),
     path('account-form/', views.userAccount, name='account_form'),
     path('share-post/<int:post_id>/', views.sharePost, name='share-post'),
+    path('regroup/', views.regroup, name='regroup'),
 ]

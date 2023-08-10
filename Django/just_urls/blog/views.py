@@ -112,3 +112,14 @@ def sharePost(request, post_id):
             return render(request, 'blog/forms/share-post.html', {'form': form, 'sent': sent, 'post': post})
     form = ShareForm()
     return render(request, 'blog/forms/share-post.html', {'form': form, 'sent': sent, 'post': post})
+
+
+def regroup(request):
+    packet = [
+        {'name': 'Rahmat', 'age': 21, 'weight': 80},
+        {'name': 'Amir', 'age': 14, 'weight': 60},
+        {'name': 'Reza', 'age': 50, 'weight': 90},
+        {'name': 'Hossein', 'age': 21, 'weight': 70},
+        {'name': 'Narges', 'age': 14, 'weight': 50},
+    ]
+    return render(request, 'blog/post/regroup.html', {'packet': packet})
