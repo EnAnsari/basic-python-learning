@@ -1,5 +1,6 @@
 {% extends 'blog/parent/base.html' %}
 {% block title %}Detail{% endblock %}
+{% load blog_tags %}
 {% block content %}
     <h2>
         {{ post.title }}
@@ -68,6 +69,10 @@
         {% for sm in similar_posts %}
             <a href="{% url 'blog:post_detail' sm.slug sm.id %}">{{ sm.title }}</a>
             <br>
+        {% empty %}
+            There is not any posts!
         {% endfor %}
     </div>
+    <br>
+    {% last_posts %}
 {% endblock %}

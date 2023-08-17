@@ -1,0 +1,9 @@
+<div>
+    last posts:<br>
+    {% for post in posts %}
+        <a href="{% url 'blog:post_detail' post.slug post.id %}">{{ post.title }}: {{ post.publish }}</a>
+        <br>
+    {% empty %}
+        There is not any posts!
+    {% endfor %}
+</div>
