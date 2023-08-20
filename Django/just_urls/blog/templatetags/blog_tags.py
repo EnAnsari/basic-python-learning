@@ -1,6 +1,9 @@
 from django import template
 from ..models import Post
 import datetime
+from django.template.defaultfilters import upper
+import markdown
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -17,3 +20,15 @@ def number_of_posts(is_today=False):
 def last_posts(count=3):
     posts = Post.published.order_by('-publish')[:count]
     return {'posts': posts}
+
+
+@register.filter(name='rep')
+def replace_dash(text, sep='-'):
+    return upper(str(text).replace(' ', sep))
+
+
+@register.filter(name='markdown')
+def markdown_filter(text):
+    if 'script' not in text:
+        return mark_safe(markdown.markdown(text))
+    return 'No Text!'

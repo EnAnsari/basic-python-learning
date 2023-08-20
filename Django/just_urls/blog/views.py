@@ -122,4 +122,5 @@ def regroup(request):
         {'name': 'Hossein', 'age': 21, 'weight': 70},
         {'name': 'Narges', 'age': 14, 'weight': 50},
     ]
-    return render(request, 'blog/post/regroup.html', {'packet': packet})
+    text = "Hello"
+    return render(request, 'blog/post/regroup.html', {'packet': packet, 'text': text})

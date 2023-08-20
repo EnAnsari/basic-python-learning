@@ -1,4 +1,5 @@
 {% extends 'blog/parent/base.html' %}
+{% load blog_tags %}
 {% block title %}Detail{% endblock %}
 {% block content %}
     {% spaceless %}
@@ -16,4 +17,7 @@
             {% endfor %}
         </ul>
     {% endspaceless %}
+    <div>
+        {{ text|markdown }}
+    </div>
 {% endblock %}
