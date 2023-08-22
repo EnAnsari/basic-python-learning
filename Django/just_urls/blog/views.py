@@ -124,3 +124,22 @@ def regroup(request):
     ]
     text = "Hello"
     return render(request, 'blog/post/regroup.html', {'packet': packet, 'text': text})
+
+
+def search(request):
+    if request.method == 'POST':
+        query_name = request.POST.get('search-input')
+        if query_name:
+            result1 = Post.published.filter(body__contains=query_name)
+            result2 = Post.published.filter(title__contains=query_name)
+            posts = result1 | result2
+            paginator = Paginator(posts, 2)
+            page = request.GET.get('page')
+            try:
+                posts = paginator.page(page)
+            except PageNotAnInteger:
+                posts = paginator.page(1)
+            except EmptyPage:
+                posts = paginator.page(paginator.num_pages)
+            return render(request, 'blog/post/index.html', {'posts': posts, 'page': page})
+    return postList(request)

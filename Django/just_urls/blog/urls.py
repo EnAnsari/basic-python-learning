@@ -11,4 +11,5 @@ urlpatterns = [
     path('account-form/', views.userAccount, name='account_form'),
     path('share-post/<int:post_id>/', views.sharePost, name='share-post'),
     path('regroup/', views.regroup, name='regroup'),
+    path('search/', views.search, name='search'),
 ]

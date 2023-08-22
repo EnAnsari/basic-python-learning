@@ -8,11 +8,13 @@
     <i>
         written by: {{ post.author }}
     </i>
-    <p>
-        context: <br>
-{#        {{ post.body | linebreaks | truncatewords:3 }}#}
-        {{ post.body | linebreaks }}
-    </p>
+    <div style="width: 600px">
+        <p>
+            context: <br>
+    {#        {{ post.body | linebreaks | truncatewords:3 }}#}
+            {{ post.body | linebreaks }}
+        </p>
+    </div>
     <hr>
     <p>
         published in {{ post.publish }}

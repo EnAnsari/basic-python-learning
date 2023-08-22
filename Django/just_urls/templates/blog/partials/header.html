@@ -1,1 +1,7 @@
-<h6>Hello, I'm Rahmat</h6>
+<div>
+    <form action="{% url 'blog:search' %}" method="post">
+        {% csrf_token %}
+        <input type="search" placeholder="search any thing" name="search-input">
+        <input type="submit" value="search">
+    </form>
+</div>

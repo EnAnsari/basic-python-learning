@@ -24,6 +24,8 @@
             </div>
         </div>
         <br>
+    {% empty %}
+        There is not any posts!<br><br>
     {% endfor %}
     <a href="{% url "home:index" %}">
         back
