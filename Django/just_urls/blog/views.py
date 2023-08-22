@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
+from django.contrib.postgres.search import SearchVector
 
 
 def index(request):
@@ -130,9 +131,8 @@ def search(request):
     if request.method == 'POST':
         query_name = request.POST.get('search-input')
         if query_name:
-            result1 = Post.published.filter(body__contains=query_name)
-            result2 = Post.published.filter(title__contains=query_name)
-            posts = result1 | result2
+            # result1 = Post.published.filter(body__search=query_name)
+            posts = Post.published.annotate(search=SearchVector('body', 'title', 'tags')).filter(search=query_name)
             paginator = Paginator(posts, 2)
             page = request.GET.get('page')
             try:

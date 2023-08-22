@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     'home.apps.HomeConfig',
-    'taggit',
+    'taggit',  # for tag system
+    'django.contrib.postgres',  # for searching
 ]
 
 MIDDLEWARE = [
