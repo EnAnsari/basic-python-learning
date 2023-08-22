@@ -7,7 +7,7 @@ from django.views.generic import ListView
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 
 def index(request):
@@ -128,11 +128,17 @@ def regroup(request):
 
 
 def search(request):
-    if request.method == 'POST':
-        query_name = request.POST.get('search-input')
+    if request.method == 'GET':
+        query_name = request.GET.get('search-input')
         if query_name:
             # result1 = Post.published.filter(body__search=query_name)
-            posts = Post.published.annotate(search=SearchVector('body', 'title', 'tags')).filter(search=query_name)
+            search_vector = SearchVector('body', 'title')
+            search_query = SearchQuery(query_name)
+            search_rank = SearchRank(search_vector, search_query)
+            posts = Post.published.annotate(
+                search=search_vector,
+                rank=search_rank
+            ).filter(search=search_query).order_by('-rank')
             paginator = Paginator(posts, 2)
             page = request.GET.get('page')
             try:

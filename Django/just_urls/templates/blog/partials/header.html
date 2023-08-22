@@ -1,5 +1,5 @@
 <div>
-    <form action="{% url 'blog:search' %}" method="post">
+    <form action="{% url 'blog:search' %}" method="get">
         {% csrf_token %}
         <input type="search" placeholder="search any thing" name="search-input">
         <input type="submit" value="search">
