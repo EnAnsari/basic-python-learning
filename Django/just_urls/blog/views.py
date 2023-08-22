@@ -1,13 +1,14 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-from .models import Post, Account, Comment
-from .forms import AccountForm, ShareForm, CommentForm
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.views.generic import ListView
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.core.mail import send_mail
-from taggit.models import Tag
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.db.models.functions import Greatest
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from taggit.models import Tag
+
+from .forms import AccountForm, ShareForm, CommentForm
+from .models import Post, Account
 
 
 def index(request):
@@ -132,13 +133,18 @@ def search(request):
         query_name = request.GET.get('search-input')
         if query_name:
             # result1 = Post.published.filter(body__search=query_name)
-            search_vector = SearchVector('body', 'title')
-            search_query = SearchQuery(query_name)
-            search_rank = SearchRank(search_vector, search_query)
-            posts = Post.published.annotate(
-                search=search_vector,
-                rank=search_rank
-            ).filter(search=search_query).order_by('-rank')
+            # search_vector = SearchVector('body', weight='B') + SearchVector('title', weight='A')
+            # search_query = SearchQuery(query_name)
+            # search_rank = SearchRank(search_vector, search_query)
+            # posts = Post.published.annotate(
+            #     # search=search_vector,
+            #     rank=search_rank
+            # ).filter(rank__gte=0.3).order_by('-rank')
+            sim_search = Greatest(
+                TrigramSimilarity('body', query_name),
+                TrigramSimilarity('title', query_name)
+            )
+            posts = Post.published.annotate(sim=sim_search).filter(sim__gt=0.1).order_by('-sim')
             paginator = Paginator(posts, 2)
             page = request.GET.get('page')
             try:
