@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
 {% endblock %}
 {% block content %}
-    <h1 class="test">List of Posts!</h1>
+    <h1 class="test"><a href="{% url 'blog:post_list' %}">List of Posts!</a></h1>
     {% if tag %}
         posts filtered by
         <span style="color: red">{{ tag.name }}</span>

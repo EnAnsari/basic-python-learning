@@ -1,7 +1,7 @@
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.db.models.functions import Greatest
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -132,26 +132,35 @@ def search(request):
     if request.method == 'GET':
         query_name = request.GET.get('search-input')
         if query_name:
-            # result1 = Post.published.filter(body__search=query_name)
-            # search_vector = SearchVector('body', weight='B') + SearchVector('title', weight='A')
-            # search_query = SearchQuery(query_name)
-            # search_rank = SearchRank(search_vector, search_query)
-            # posts = Post.published.annotate(
-            #     # search=search_vector,
-            #     rank=search_rank
-            # ).filter(rank__gte=0.3).order_by('-rank')
-            sim_search = Greatest(
-                TrigramSimilarity('body', query_name),
-                TrigramSimilarity('title', query_name)
-            )
-            posts = Post.published.annotate(sim=sim_search).filter(sim__gt=0.1).order_by('-sim')
-            paginator = Paginator(posts, 2)
-            page = request.GET.get('page')
+            request.session['query-session'] = query_name
+        else:
             try:
-                posts = paginator.page(page)
-            except PageNotAnInteger:
-                posts = paginator.page(1)
-            except EmptyPage:
-                posts = paginator.page(paginator.num_pages)
-            return render(request, 'blog/post/index.html', {'posts': posts, 'page': page})
-    return postList(request)
+                query_name = request.session['query-session']
+            except:
+                query_name = ''
+
+        # result1 = Post.published.filter(body__search=query_name)
+        # search_vector = SearchVector('body', weight='B') + SearchVector('title', weight='A')
+        # search_query = SearchQuery(query_name)
+        # search_rank = SearchRank(search_vector, search_query)
+        # posts = Post.published.annotate(
+        #     # search=search_vector,
+        #     rank=search_rank
+        # ).filter(rank__gte=0.3).order_by('-rank')
+
+        # posts = Post.published.filter(Q(body__contains=query_name) | Q(title__contains=query_name))
+
+        sim_search = Greatest(
+            TrigramSimilarity('body', query_name),
+            TrigramSimilarity('title', query_name)
+        )
+        posts = Post.published.annotate(sim=sim_search).filter(sim__gt=0.0).order_by('-sim')
+        paginator = Paginator(posts, 2)
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+        return render(request, 'blog/post/index.html', {'posts': posts, 'page': page})
