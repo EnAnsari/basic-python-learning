@@ -1,5 +1,5 @@
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count, Q
@@ -184,3 +184,8 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'blog/forms/account/login.html', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('home:index')

@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-</head>
-<body>
+{% extends 'blog/parent/base.html' %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
     <h1>This is my first project in Django!</h1>
-    {% if request.user.is_authenticated %}
-        <h2>Welcome {{ request.user.username }}</h2>
-    {% endif %}
+{#    {% if request.user.is_authenticated %}#}
+{#        <h2>Welcome {{ request.user.username }}</h2>#}
+{#        <p>(<a href="{% url 'blog:logout' %}">logout</a>)</p>#}
+{#    {% endif %}#}
 {#    <h3><a href="http://localhost:8000/admin/">admin</a></h3>#}
-    <h3><a href="{% url 'blog:login' %}">login</a></h3>
     <h3><a href="{{ link }}">admin</a></h3>
     <h3><a href="{% url 'blog:index' %}">blog index</a></h3>
     <h3><a href="{% url 'blog:post_list' %}">post list</a></h3>
     <h3><a href="{% url 'home:contact_us' %}">contact us</a></h3>
-</body>
-</html>
+
+{% endblock %}
