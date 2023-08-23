@@ -1,4 +1,5 @@
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+from django.contrib.auth import login, authenticate
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count, Q
@@ -7,7 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from taggit.models import Tag
 
-from .forms import AccountForm, ShareForm, CommentForm
+from .forms import AccountForm, ShareForm, CommentForm, LoginForm
 from .models import Post, Account
 
 
@@ -164,3 +165,22 @@ def search(request):
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)
         return render(request, 'blog/post/index.html', {'posts': posts, 'page': page})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(request, username=cd['username'], password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('home:index')
+                else:
+                    return HttpResponse('Your Account is de-active!')
+            else:
+                return HttpResponse('username or password is incorrect!')
+    else:
+        form = LoginForm()
+    return render(request, 'blog/forms/account/login.html', {'form': form})

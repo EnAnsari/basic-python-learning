@@ -6,7 +6,11 @@
 </head>
 <body>
     <h1>This is my first project in Django!</h1>
+    {% if request.user.is_authenticated %}
+        <h2>Welcome {{ request.user.username }}</h2>
+    {% endif %}
 {#    <h3><a href="http://localhost:8000/admin/">admin</a></h3>#}
+    <h3><a href="{% url 'blog:login' %}">login</a></h3>
     <h3><a href="{{ link }}">admin</a></h3>
     <h3><a href="{% url 'blog:index' %}">blog index</a></h3>
     <h3><a href="{% url 'blog:post_list' %}">post list</a></h3>

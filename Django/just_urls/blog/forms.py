@@ -55,3 +55,8 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'body': forms.Textarea(attrs={'class': 'body-of-comment'})
         }
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField()

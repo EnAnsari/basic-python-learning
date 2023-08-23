@@ -12,4 +12,5 @@ urlpatterns = [
     path('share-post/<int:post_id>/', views.sharePost, name='share-post'),
     path('regroup/', views.regroup, name='regroup'),
     path('search/', views.search, name='search'),
+    path('login/', views.user_login, name='login'),
 ]
