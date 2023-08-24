@@ -60,3 +60,22 @@ class CommentForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField()
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(widget=forms.PasswordInput(), label='old password')
+    new_password1 = forms.CharField(widget=forms.PasswordInput(), label='new password')
+    new_password2 = forms.CharField(widget=forms.PasswordInput(), label='repeat of new password')
+
+    def clean_new_password1(self):
+        new_password = self.cleaned_data.get('new_password1')
+        if len(new_password) < 8:
+            raise forms.ValidationError('Your Password must be 8 character minimum!')
+        return new_password
+
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')
+        if password1 != password2:
+            raise forms.ValidationError('new password and its repeat isn\'t equal!')
+        return password2

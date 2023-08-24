@@ -1,5 +1,6 @@
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count, Q
@@ -8,7 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from taggit.models import Tag
 
-from .forms import AccountForm, ShareForm, CommentForm, LoginForm
+from .forms import AccountForm, ShareForm, CommentForm, LoginForm, ChangePasswordForm
 from .models import Post, Account
 
 
@@ -189,3 +190,28 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('home:index')
+
+
+@login_required(login_url='home:index')
+def change_password(request):
+    if request.method == 'POST':
+        user = request.user
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            old_password = cd['old_password']
+            new_password1 = cd['new_password1']
+            new_password2 = cd['new_password2']
+            if not user.check_password(old_password):
+                return HttpResponse('your old password is incorrect!')
+            elif new_password1 != new_password2:
+                return HttpResponse('your new passwords is not equal!')
+            else:
+                user.set_password(new_password1)
+                user.save()
+                login(request, user)
+                # return HttpResponse('your password is changed successfully!')
+                return redirect('home:index')
+    else:
+        form = ChangePasswordForm()
+    return render(request, 'blog/forms/account/change_password.html', {'form': form})
